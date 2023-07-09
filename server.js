@@ -19,6 +19,8 @@ const upload = multer({ storage: fileStorageEngine });
 app.post("/upload", upload.single("csvFile"), (req, res) => {
   const filePath = req.file.path;
 
+  console.log(filePath);
+
   //spawn new child process to call the python script
   exec(`python analyze-csv.py ${filePath}`, (error, stdout, stderr) => {
     if (error) {
@@ -28,7 +30,8 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
     }
 
     // Process the script output if needed
-    console.log(`Python script output: ${stdout}`);
+    const data = JSON.parse(stdout);
+    console.log(`Python script output: ${data}`);
 
     // Send a response to the client indicating succesful processing
     res.status(200).send("File processed successfully");
