@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 # file_path = sys.argv[1]
-file_path = 'uploads/1688920227878--Specimen_RawData_1.csv'
+file_path = 'uploads/1689041725975--Specimen_RawData_1.csv'
 # read csv file using pandas
 data = pd.read_csv(file_path, skiprows=[1])
 

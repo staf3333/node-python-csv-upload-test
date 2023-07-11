@@ -31,7 +31,13 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
 
     // Process the script output if needed
     const data = JSON.parse(stdout);
-    console.log(`Python script output: ${data}`);
+    // console.log(`Python script output: ${data}`);
+    console.log(Object.keys(data));
+
+    // const { "x": x, "y": y } = data;
+    // console.log(x);
+    // console.log(y);
+    const { x, y } = data;
 
     // Send a response to the client indicating succesful processing
     res.status(200).send("File processed successfully");
