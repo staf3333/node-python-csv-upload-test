@@ -16,6 +16,10 @@ const fileStorageEngine = multer.diskStorage({
 
 const upload = multer({ storage: fileStorageEngine });
 
+app.get("/", (req, res) => {
+  res.sendFile(`${__dirname}/index.html`);
+});
+
 app.post("/upload", upload.single("csvFile"), (req, res) => {
   const filePath = req.file.path;
 
@@ -43,6 +47,8 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
     res.status(200).send("File processed successfully");
   });
 });
+
+app.post("/uploadFolder", (req, res) => {});
 
 app.listen(5000, () => {
   console.log("Server running on port 5000!");

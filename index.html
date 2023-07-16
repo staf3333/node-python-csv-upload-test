@@ -1,0 +1,22 @@
+<script src="/client.js" defer></script>
+<h3>This is a web app to practice uploading directories to a server!</h3>
+<input type="file" id="filepicker" name="fileList" webkitdirectory multiple />
+<ul id="listing"></ul>
+<!--include the Glitch button to show what the webpage is about and
+      to make it easier for folks to view source and remix -->
+<div class="glitchButton" style="position: fixed; top: 20px; right: 20px"></div>
+<script src="https://button.glitch.me/button.js"></script>
+<script>
+  document.getElementById("filepicker").addEventListener(
+    "change",
+    (event) => {
+      let output = document.getElementById("listing");
+      for (const file of event.target.files) {
+        let item = document.createElement("li");
+        item.textContent = file.webkitRelativePath;
+        output.appendChild(item);
+      }
+    },
+    false
+  );
+</script>
