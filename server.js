@@ -2,8 +2,10 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const { exec } = require("child_process");
-
+const cors = require("cors");
 const app = express();
+
+app.use(cors());
 
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -30,7 +32,7 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
     if (error) {
       console.error(`Error executing Python script: ${error}`);
       //handle the error appropriately
-      return res.status(500).send("Iternal Server Error");
+      return res.status(500).send("Internal Server Error");
     }
 
     // Process the script output if needed
@@ -48,7 +50,26 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
   });
 });
 
-app.post("/uploadFolder", (req, res) => {});
+const folderStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "DIRECTORYUPLOAD" + "--" + file.originalname);
+  },
+});
+
+const uploadFolder = multer({
+  storage: folderStorageEngine,
+  preservePath: true,
+});
+
+app.post("/uploadFolder", upload.array("csvFiles"), (req, res) => {
+  console.log("request recieved!");
+  console.log(req.files);
+  // console.log(req.body);
+  res.send("Multiple Files Upload Success");
+});
 
 app.listen(5000, () => {
   console.log("Server running on port 5000!");
