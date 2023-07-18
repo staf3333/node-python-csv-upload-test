@@ -52,7 +52,8 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
 
 const folderStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 15);
+    cb(null, `./uploads/folderUploads`);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "DIRECTORYUPLOAD" + "--" + file.originalname);
@@ -66,8 +67,9 @@ const uploadFolder = multer({
 
 app.post("/uploadFolder", upload.array("csvFiles"), (req, res) => {
   console.log("request recieved!");
-  console.log(req.files);
-  // console.log(req.body);
+  //console.log(req.files);
+  const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 16);
+  console.log(folder);
   res.send("Multiple Files Upload Success");
 });
 
