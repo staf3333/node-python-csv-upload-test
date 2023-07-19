@@ -62,7 +62,7 @@ const folderStorageEngine = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-- DIRECTORYUPLOAD" + "--" + file.originalname);
+    cb(null, path.basename(file.originalname));
   },
 });
 
