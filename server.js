@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const fs = require("fs-extra");
 const path = require("path");
 const { exec } = require("child_process");
 const cors = require("cors");
@@ -52,11 +53,16 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
 
 const folderStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 15);
-    cb(null, `./uploads/folderUploads`);
+    // const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 15);
+    console.log("IN CALLBACK");
+    console.log(path.dirname(file.originalname));
+    // const path = `./uploads//${folder}`;
+    const uploadPath = `./uploads/${path.dirname(file.originalname)}`;
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "DIRECTORYUPLOAD" + "--" + file.originalname);
+    cb(null, Date.now() + "-- DIRECTORYUPLOAD" + "--" + file.originalname);
   },
 });
 
@@ -65,11 +71,11 @@ const uploadFolder = multer({
   preservePath: true,
 });
 
-app.post("/uploadFolder", upload.array("csvFiles"), (req, res) => {
+app.post("/uploadFolder", uploadFolder.array("csvFiles"), (req, res) => {
   console.log("request recieved!");
-  //console.log(req.files);
-  const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 16);
-  console.log(folder);
+  console.log(req.files);
+  // const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 16);
+  // console.log(folder);
   res.send("Multiple Files Upload Success");
 });
 

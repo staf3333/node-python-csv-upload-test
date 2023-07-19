@@ -18,8 +18,10 @@ function App() {
     // and append each file to data seperately
     for (let i = 0; i < files.length; i++) {
       // console.log(files[i]);
-      data.append("csvFiles", files[i], files[i].webkitRelativePath);
-      data.append(files[i].name, files[i].webkitRelativePath);
+      // data.append("csvFiles", files[i], files[i].webkitRelativePath);
+      // data.append(files[i].name, files[i].webkitRelativePath);
+      data.append("csvFiles", files[i]);
+      // data.append(files[i].name);
     }
 
     fetch("http://localhost:5000/uploadFolder", {
