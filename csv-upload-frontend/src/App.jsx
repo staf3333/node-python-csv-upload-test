@@ -53,6 +53,13 @@ function App() {
     setFiles(e.target.files);
   };
 
+  const analyzeData = async () => {
+    console.log("analyzing data!");
+
+    const res = await fetch("http://localhost:5000/analyzeFolder");
+    console.log(res);
+  };
+
   const changeFileName = () => {
     console.log(files[0].name);
     console.log(files[0].webkitRelativePath);
@@ -75,6 +82,7 @@ function App() {
         <button onClick={changeFileName}>Change File Name</button>
         <button type="submit">Submit Folder</button>
       </form>
+      <button onClick={analyzeData}>Analyze the data</button>
     </>
   );
 }
