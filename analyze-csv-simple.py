@@ -57,6 +57,8 @@ for test_key in samples:
 
 # print(samples)
 
+# learned about regex so I can properly pull project names from sample data
+
 # INSERT DESIRED FIELDS FOR EXPORT HERE
 fields_to_pull = ['Cycle', 'Displacement(mm)', 'Force(N)']
 
