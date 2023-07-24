@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 import pandas as pd
+import re
+from collections import defaultdict
+import json
+
 
 # Set directory, in prod this will be passed in as an argument to the child process
 data_directory = "uploads/Strung V1 Stiff"
@@ -115,7 +119,7 @@ stiffness_results = []
 names = []
 n = 0
 
-encode_data = []
+encode_data = defaultdict(defaultdict)
 
 for test_idx, test_key in enumerate(samples.keys()):
 
@@ -163,9 +167,16 @@ for test_idx, test_key in enumerate(samples.keys()):
 
     stiffness = ((y2-y1)/(x2-x1))
 
-    # print(names[n-1])
-    # print(stiffness)
+    # Use regular expression to extract sample names and regions
+    # file name must be of form: YYYY_MM_DD_(any sample name)_(region i.e. 1ML/2AP)
+    # edge cases: region less than 2 chars (shouldn't happen)
+    txt = names[n - 1]
+    sample_name = re.search("(?<=\d{4}_\d{2}_\d{2}_)\w+(?=_\d)", txt).group()
+    region = re.search("(?<=_)\w{3,8}$", txt).group()
 
-    encode_data.append((names[n - 1], stiffness))
+    encode_data[sample_name][region] = stiffness
 
-print(encode_data)
+    # encode_data[names[n - 1]] = stiffness
+
+# print(encode_data)
+print(json.dumps(encode_data))
