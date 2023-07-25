@@ -1,10 +1,11 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
 import "./App.css";
+import DataChart from "./DataChart";
 
 function App() {
   const [files, setFiles] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +58,9 @@ function App() {
     console.log("analyzing data!");
 
     const res = await fetch("http://localhost:5000/analyzeFolder");
-    console.log(res);
+    const data = await res.json();
+    // const data = JSON.parse(res);
+    console.log(data);
   };
 
   const changeFileName = () => {
@@ -66,6 +69,17 @@ function App() {
     files[0].name = files[0].webkitRelativePath;
     console.log(files[0].name);
   };
+
+  useEffect(() => {
+    const getFolderData = async () => {
+      const res = await fetch("http://localhost:5000/analyzeFolder");
+      const data = await res.json();
+      // const data = JSON.parse(res);
+      setData(data);
+      setLoading(false);
+    };
+    getFolderData();
+  }, []);
 
   return (
     <>
@@ -83,6 +97,7 @@ function App() {
         <button type="submit">Submit Folder</button>
       </form>
       <button onClick={analyzeData}>Analyze the data</button>
+      {loading ? <h1>Chart is Loading</h1> : <DataChart stiffData={data} />}
     </>
   );
 }

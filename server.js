@@ -96,8 +96,10 @@ app.get("/analyzeFolder", (req, res) => {
     // const { x, y } = data;
     // Send a response to the client indicating succesful processing
     console.log("Successful!");
-    console.log(stdout);
-    res.status(200).send("File processed successfully");
+    const data = JSON.parse(stdout);
+    res.setHeader("Content-Type", "application/json");
+    res.writeHead(200);
+    res.end(JSON.stringify(data, null, 3));
   });
 });
 
