@@ -174,7 +174,8 @@ for test_idx, test_key in enumerate(samples.keys()):
     sample_name = re.search("(?<=\d{4}_\d{2}_\d{2}_)\w+(?=_\d)", txt).group()
     region = re.search("(?<=_)\w{3,8}$", txt).group()
 
-    encode_data[sample_name][region] = stiffness
+    encode_data[sample_name][region] = {
+        'stiffness': stiffness, 'x': Extension, 'y': Load}
 
     # encode_data[names[n - 1]] = stiffness
 

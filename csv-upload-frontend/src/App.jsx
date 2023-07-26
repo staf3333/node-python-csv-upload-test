@@ -97,7 +97,7 @@ function App() {
         <button type="submit">Submit Folder</button>
       </form>
       <button onClick={analyzeData}>Analyze the data</button>
-      {loading ? <h1>Chart is Loading</h1> : <DataChart stiffData={data} />}
+      {loading ? <h1>Chart is Loading</h1> : <DataChart samples={data} />}
     </>
   );
 }
