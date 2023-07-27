@@ -4,10 +4,13 @@ import pandas as pd
 import re
 from collections import defaultdict
 import json
+import sys
 
+filepath = sys.argv[1]
 
 # Set directory, in prod this will be passed in as an argument to the child process
-data_directory = "uploads/Strung V1 Stiff"
+data_directory = filepath
+
 
 cycles = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5]
 cycle1 = [0, 0.5]

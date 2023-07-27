@@ -9,24 +9,40 @@ import {
   LineElement,
 } from "chart.js";
 
-const createPoints = (dataObj) => {
+const createPoints = (sample) => {
   const pointsArray = [];
-  for (const sample in dataObj) {
-    for (const region in dataObj[sample]) {
-      pointsArray.push({ x: region, y: dataObj[sample][region]["stiffness"] });
-    }
+
+  for (const region in sample) {
+    pointsArray.push({ x: region, y: sample[region]["stiffness"] });
   }
-  console.log(pointsArray);
+
+  // console.log(pointsArray);
   return pointsArray;
 };
 
 const createLabels = (dataObj) => {
   const labels = [];
+  console.log(dataObj);
   for (const sample in dataObj) {
     for (const region in dataObj[sample]) {
       labels.push(region);
     }
   }
+};
+
+const createDatasets = (dataObj) => {
+  const datasets = [];
+  for (const sample in dataObj) {
+    const sampleObj = {
+      label: sample,
+      data: createPoints(dataObj[sample]),
+      borderColor: "#f87979",
+      backgroundColor: "rgb(255, 99, 132)",
+      showLine: true,
+    };
+    datasets.push(sampleObj);
+  }
+  return datasets;
 };
 
 ChartJS.register(
@@ -42,15 +58,7 @@ const DataChart = ({ samples }) => {
   console.log(samples);
   const projName = Object.keys(samples)[0];
   const data = {
-    datasets: [
-      {
-        label: projName,
-        data: createPoints(samples),
-        borderColor: "#f87979",
-        backgroundColor: "rgb(255, 99, 132)",
-        showLine: true,
-      },
-    ],
+    datasets: createDatasets(samples),
   };
   const options = {
     scales: {
@@ -61,6 +69,7 @@ const DataChart = ({ samples }) => {
       },
     },
   };
+  createDatasets(samples);
   return (
     <>
       <Scatter options={options} data={data} />

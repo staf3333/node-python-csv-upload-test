@@ -1,5 +1,5 @@
-from tabulate import tabulate
-import matplotlib.pyplot as plt
+# from tabulate import tabulate
+# import matplotlib.pyplot as plt
 import csv
 import os
 import tkinter
@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-import xlsxwriter
+# import xlsxwriter
 
-import difflib
-import ipywidgets as widgets
+# import difflib
+# import ipywidgets as widgets
 
 import time
 samples = {}
@@ -28,8 +28,9 @@ root = tkinter.Tk()
 root.withdraw()
 
 # shows dialog box and return the path
-data_directory = askdirectory(
-    initialdir=data_directory_start, title='Select Folder')
+data_directory = data_directory_start
+# askdirectory(
+#     initialdir=data_directory_start, title='Select Folder')
 
 if data_directory == '':
     print('ERROR: NO DATA FOLDER SELECTED')

@@ -54,8 +54,8 @@ app.post("/upload", upload.single("csvFile"), (req, res) => {
 const folderStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     // const folder = req.body["Specimen_RawData_1.csv"][0].slice(0, 15);
-    console.log("IN CALLBACK");
-    console.log(path.dirname(file.originalname));
+    // console.log("IN CALLBACK");
+    // console.log(path.dirname(file.originalname));
     // const path = `./uploads//${folder}`;
     const uploadPath = `./uploads/${path.dirname(file.originalname)}`;
     fs.mkdirSync(uploadPath, { recursive: true });
@@ -72,35 +72,38 @@ const uploadFolder = multer({
 });
 
 app.post("/uploadFolder", uploadFolder.array("csvFiles"), (req, res) => {
-  console.log("request recieved!");
-  // console.log(req.files);
+  console.log("request received!");
+  console.log(path.dirname("uploads/" + req.files[0].originalname));
   res.send("Multiple Files Upload Success");
 });
 
 app.get("/analyzeFolder", (req, res) => {
-  console.log("request recieved!");
-
-  exec(`python analyze-csv-simple.py`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing Python script: ${error}`);
-      //handle the error appropriately
-      return res.status(500).send("Internal Server Error");
+  console.log("request received!");
+  exec(
+    `python analyze-csv-simple.py "uploads/9_22_2022 Round 2 Testing"`,
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing Python script: ${error}`);
+        //handle the error appropriately
+        return res.status(500).send("Internal Server Error");
+      }
+      // // Process the script output if needed
+      // const data = JSON.parse(stdout);
+      // // console.log(`Python script output: ${data}`);
+      // console.log(Object.keys(data));
+      // // const { "x": x, "y": y } = data;
+      // // console.log(x);
+      // // console.log(y);
+      // const { x, y } = data;
+      // Send a response to the client indicating succesful processing
+      console.log("Successful!");
+      // console.log(stdout);
+      const data = JSON.parse(stdout);
+      res.setHeader("Content-Type", "application/json");
+      res.writeHead(200);
+      res.end(JSON.stringify(data, null, 3));
     }
-    // // Process the script output if needed
-    // const data = JSON.parse(stdout);
-    // // console.log(`Python script output: ${data}`);
-    // console.log(Object.keys(data));
-    // // const { "x": x, "y": y } = data;
-    // // console.log(x);
-    // // console.log(y);
-    // const { x, y } = data;
-    // Send a response to the client indicating succesful processing
-    console.log("Successful!");
-    const data = JSON.parse(stdout);
-    res.setHeader("Content-Type", "application/json");
-    res.writeHead(200);
-    res.end(JSON.stringify(data, null, 3));
-  });
+  );
 });
 
 app.listen(5000, () => {
