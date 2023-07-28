@@ -60,7 +60,9 @@ function App() {
     const res = await fetch("http://localhost:5000/analyzeFolder");
     const data = await res.json();
     // const data = JSON.parse(res);
-    console.log(data);
+    setData(data);
+    setLoading(false);
+    // console.log(data);
   };
 
   const changeFileName = () => {
@@ -70,16 +72,16 @@ function App() {
     console.log(files[0].name);
   };
 
-  useEffect(() => {
-    const getFolderData = async () => {
-      const res = await fetch("http://localhost:5000/analyzeFolder");
-      const data = await res.json();
-      // const data = JSON.parse(res);
-      setData(data);
-      setLoading(false);
-    };
-    getFolderData();
-  }, []);
+  // useEffect(() => {
+  //   const getFolderData = async () => {
+  //     const res = await fetch("http://localhost:5000/analyzeFolder");
+  //     const data = await res.json();
+  //     // const data = JSON.parse(res);
+  // setData(data);
+  // setLoading(false);
+  //   };
+  //   getFolderData();
+  // }, []);
 
   return (
     <>
