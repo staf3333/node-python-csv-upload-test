@@ -3,9 +3,9 @@ const multer = require("multer");
 const fs = require("fs-extra");
 const path = require("path");
 const { exec } = require("child_process");
-const cors = require("cors");
 const app = express();
 
+const cors = require("cors");
 app.use(cors());
 
 const fileStorageEngine = multer.diskStorage({
@@ -71,9 +71,17 @@ const uploadFolder = multer({
   preservePath: true,
 });
 
+const getRoot = (dirName) => {
+  console.log(dirName);
+  const regEx = /^.+?[/]/;
+  const root = regEx.exec(dirName)[0];
+  return root;
+};
+
 app.post("/uploadFolder", uploadFolder.array("csvFiles"), (req, res) => {
   console.log("request received!");
-  console.log(path.dirname("uploads/" + req.files[0].originalname));
+  const rootPath = getRoot(req.files[0].originalname);
+  console.log(`uploads/${rootPath}`);
   res.send("Multiple Files Upload Success");
 });
 
