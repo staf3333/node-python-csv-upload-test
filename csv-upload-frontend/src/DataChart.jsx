@@ -28,6 +28,7 @@ const createLabels = (dataObj) => {
       labels.push(region);
     }
   }
+  console.log(labels);
 };
 
 const createDatasets = (dataObj) => {

@@ -88,7 +88,7 @@ app.post("/uploadFolder", uploadFolder.array("csvFiles"), (req, res) => {
 app.get("/analyzeFolder", (req, res) => {
   console.log("request received!");
   exec(
-    `python analyze-csv-simple.py "uploads/9_22_2022 Round 2 Testing"`,
+    `python analyze-csv-simple.py "uploads/9_22_2022 Round 2 Testing/"`,
     (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing Python script: ${error}`);
